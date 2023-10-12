@@ -2,10 +2,11 @@
     // API URL
     $url = 'http://localhost/apiRasp/';
 
-    //payload is a json with the data
-    $now = date("d-m-Y h:i:s");
+    //now
+    $dt = new DateTime("now", new DateTimeZone('America/Sao_Paulo'));
+    $now = $dt->format("d-m-Y h:i:s");
     
-    //example
+    //payload is a json with the data
     $payload = '{"d@tA":[{"t":"time1","s1":"sensor1","s2":"sensor2"},{"t":"time2","s1":"sensor1","s2":"sensor2"},{"t":"time2","s1":"sensor1","s2":"sensor2"}]}';
     $payload = '{"d@tA":[{"t":"'. $now .'","s1":"'.rand(0, 1023).'","s2":"'.rand(0, 1023).'"},{"t":"'. $now .'","s1":"'.rand(0, 1023).'","s2":"'.rand(0, 1023).'"},{"t":"'. $now .'","s1":"'.rand(0, 1023).'","s2":"'.rand(0, 1023).'"}]}';
 
