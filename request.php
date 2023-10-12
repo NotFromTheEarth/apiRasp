@@ -3,7 +3,11 @@
     $url = 'http://localhost/apiRasp/';
 
     //payload is a json with the data
-    $payload = '{"data":[{"t":"time1","s1":"sensor1","s2":"sensor2"},{"t":"time2","s1":"sensor1","s2":"sensor2"},{"t":"time2","s1":"sensor1","s2":"sensor2"}]}';
+    $now = date("d-m-Y h:i:s");
+    
+    //example
+    $payload = '{"d@tA":[{"t":"time1","s1":"sensor1","s2":"sensor2"},{"t":"time2","s1":"sensor1","s2":"sensor2"},{"t":"time2","s1":"sensor1","s2":"sensor2"}]}';
+    $payload = '{"d@tA":[{"t":"'. $now .'","s1":"'.rand(0, 1023).'","s2":"'.rand(0, 1023).'"},{"t":"'. $now .'","s1":"'.rand(0, 1023).'","s2":"'.rand(0, 1023).'"},{"t":"'. $now .'","s1":"'.rand(0, 1023).'","s2":"'.rand(0, 1023).'"}]}';
 
     // Create a new cURL resource
     $ch = curl_init($url);
