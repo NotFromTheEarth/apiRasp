@@ -21,7 +21,7 @@
                 $sensor2 = CheckData($data, $i, sensor2Tag);
                 
                 $record = $dateTime . "|" . $sensor1 . "|" . $sensor2;
-                SaveToFile($record, datalogFile);
+                //SaveToFile($record, datalogFile);
                 
                 SaveToDb($dateTime, $sensor1, $sensor2);
             }
@@ -38,14 +38,20 @@
 
     function SaveToDb($dateTime, $sensor1, $sensor2)
     {
+        $timestamp = strtotime($dateTime);
+        $dateTime = date("Y-m-d H:i:s", $timestamp);
+        
         include("db/action.php");
-        addRegistry($dateTime, $sensor1, $sensor2);
+        $recorded = addRegistry($dateTime, $sensor1, $sensor2);
+        
+        if($recorded == false) BadRequest("Not saved to DB.");
     }
 
     function CheckData($data, $i, $tag)
     {
         if(isset($data[dataTag][$i][$tag]))
         {
+            SaveToFile($i . ":" . $data[dataTag][$i][$tag], datalogFile);
             return $data[dataTag][$i][$tag];
         }
         BadRequest("Data not set on " . $tag . ". Index: ". $i);
@@ -57,6 +63,7 @@
         $size = count($data[dataTag]);
 
         CheckSize($size);
+        SaveToFile("size:" . $size, datalogFile);
         return $size;
     }
 

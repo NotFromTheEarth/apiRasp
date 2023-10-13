@@ -5,16 +5,17 @@
         $db = make_connection();
 
         $sql_request = "INSERT INTO datalog (date, s1, s2)
-            VALUES ($dateTime, $sensor1Value, $sensor2Value)";
+            VALUES ('$dateTime', $sensor1Value, $sensor2Value)";
             
         $result = mysqli_query($db, $sql_request);
         close_connection($db);
 
         if($result == false)
         {
+            //BadRequest("$sql_request");
             return false;
         }
-
+        
         return true;
     }
     

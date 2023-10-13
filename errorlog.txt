@@ -1,6 +1,0 @@
-12-10-2023 04:08:34 - Wrong JSON identification
-12-10-2023 04:09:26 - Data not set on t. Index: 0
-12-10-2023 04:09:44 - Data not set on s1. Index: 0
-12-10-2023 04:10:05 - Data not set on s2. Index: 1
-12-10-2023 06:04:07 - Requisition was not made with POST
-13-10-2023 06:20:30 - Requisition was not made with POST
