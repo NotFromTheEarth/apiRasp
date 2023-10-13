@@ -6,7 +6,7 @@
     const timeTag = 't';
     const sensor1Tag = 's1';
     const sensor2Tag = 's2';
-    
+     
     if ($_SERVER['REQUEST_METHOD'] === 'POST')
     {
         try
@@ -19,8 +19,11 @@
                 $dateTime = CheckData($data, $i, timeTag);
                 $sensor1 = CheckData($data, $i, sensor1Tag);
                 $sensor2 = CheckData($data, $i, sensor2Tag);
+                
                 $record = $dateTime . "|" . $sensor1 . "|" . $sensor2;
                 SaveToFile($record, datalogFile);
+                
+                SaveToDb($dateTime, $sensor1, $sensor2);
             }
             
             http_response_code(200); //'OK'
@@ -33,9 +36,10 @@
     }
     BadRequest("Requisition was not made with POST");
 
-    function CheckAlreadyStored($record)
+    function SaveToDb($dateTime, $sensor1, $sensor2)
     {
-        //implement if desired
+        include("db/action.php");
+        addRegistry($dateTime, $sensor1, $sensor2);
     }
 
     function CheckData($data, $i, $tag)
@@ -64,7 +68,6 @@
 
     function SaveToFile($record, $file)
     {
-        CheckAlreadyStored($record);
         file_put_contents($file, $record . "\n",FILE_APPEND);
     }
 
