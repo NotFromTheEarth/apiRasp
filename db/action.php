@@ -1,40 +1,27 @@
 <?php
-    function addRegistry($dateTime, $sensor1Value, $sensor2Value)
+    function addPackage($package)
     {
         include_once("connection.php");
         $db = make_connection();
 
-        $sql_request = "INSERT INTO datalog (date, s1, s2)
-            VALUES ('$dateTime', $sensor1Value, $sensor2Value)";
-            
-        $result = mysqli_query($db, $sql_request);
-        close_connection($db);
-
-        if($result == false)
+        for($i = 0 ; $i < count($package); $i++)
         {
-            //BadRequest("$sql_request");
-            return false;
-        }
-        
-        return true;
-    }
-    
-    function addError($dateTime, $description)
-    {
-        include_once("connection.php");
-        $db = make_connection();
-
-        $sql_request = "INSERT INTO errorlog (date, description)
-            VALUES ('$dateTime', '$description')";
+            $date = $package[$i][0];
+            $sensor1 = $package[$i][1];
+            $sensor2 = $package[$i][2];
             
-        $result = mysqli_query($db, $sql_request);
-        close_connection($db);
+            $sql_request = "INSERT INTO datalog (date, s1, s2)
+            VALUES ('$date', $sensor1, $sensor2)";
+            $result = mysqli_query($db, $sql_request);
 
-        if($result == false)
-        {
-            return false;
+            if($result == false)
+            {
+                close_connection($db);
+                return false;
+            }
         }
 
+        close_connection($db);
         return true;
     }
 

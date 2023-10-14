@@ -6,7 +6,7 @@
     const timeTag = 't';
     const sensor1Tag = 's1';
     const sensor2Tag = 's2';
-     
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST')
     {
         try
@@ -14,18 +14,24 @@
             $data = json_decode(file_get_contents('php://input'), true);
             $dataSize = GetDataSize($data);
 
+            $package = [];
             for($i = 0; $i < $dataSize; $i++)
             {
                 $dateTime = CheckData($data, $i, timeTag);
                 $sensor1 = CheckData($data, $i, sensor1Tag);
                 $sensor2 = CheckData($data, $i, sensor2Tag);
                 
+                $timestamp = strtotime($dateTime);
+                $dateTime = date("Y-m-d H:i:s", $timestamp);
+
                 $record = $dateTime . "|" . $sensor1 . "|" . $sensor2;
-                //SaveToFile($record, datalogFile);
-                
-                SaveToDb($dateTime, $sensor1, $sensor2);
+                SaveToFile($record, datalogFile);
+                $register = [$dateTime, $sensor1, $sensor2];
+                array_push($package, $register);
             }
-            
+        
+            SaveToDb($package);
+
             http_response_code(200); //'OK'
             die();
         }
@@ -36,13 +42,10 @@
     }
     BadRequest("Requisition was not made with POST");
 
-    function SaveToDb($dateTime, $sensor1, $sensor2)
-    {
-        $timestamp = strtotime($dateTime);
-        $dateTime = date("Y-m-d H:i:s", $timestamp);
-        
+    function SaveToDb($package)
+    {   
         include("db/action.php");
-        $recorded = addRegistry($dateTime, $sensor1, $sensor2);
+        $recorded = addPackage($package);
         
         if($recorded == false) BadRequest("Not saved to DB.");
     }
@@ -51,7 +54,6 @@
     {
         if(isset($data[dataTag][$i][$tag]))
         {
-            SaveToFile($i . ":" . $data[dataTag][$i][$tag], datalogFile);
             return $data[dataTag][$i][$tag];
         }
         BadRequest("Data not set on " . $tag . ". Index: ". $i);
@@ -61,9 +63,8 @@
     {
         if(!isset($data[dataTag])) BadRequest("Wrong JSON identification");
         $size = count($data[dataTag]);
-
         CheckSize($size);
-        SaveToFile("size:" . $size, datalogFile);
+        
         return $size;
     }
 
