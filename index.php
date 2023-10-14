@@ -6,6 +6,7 @@
     const timeTag = 't';
     const sensor1Tag = 's1';
     const sensor2Tag = 's2';
+    const sensor3Tag = 's3';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST')
     {
@@ -20,13 +21,14 @@
                 $dateTime = CheckData($data, $i, timeTag);
                 $sensor1 = CheckData($data, $i, sensor1Tag);
                 $sensor2 = CheckData($data, $i, sensor2Tag);
+                $sensor3 = CheckData($data, $i, sensor3Tag);
                 
                 $timestamp = strtotime($dateTime);
                 $dateTime = date("Y-m-d H:i:s", $timestamp);
 
-                $record = $dateTime . "|" . $sensor1 . "|" . $sensor2;
+                $record = $dateTime . "|" . $sensor1 . "|" . $sensor2 . "|" . $sensor3;
                 SaveToFile($record, datalogFile);
-                $register = [$dateTime, $sensor1, $sensor2];
+                $register = [$dateTime, $sensor1, $sensor2, $sensor3];
                 array_push($package, $register);
             }
         
