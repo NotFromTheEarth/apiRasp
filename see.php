@@ -1,7 +1,8 @@
 <?php
     if ($_SERVER['REQUEST_METHOD'] === 'GET')
     {
-        echo "Bora mostrar";
+        include_once("./db/action.php");
+        showRecords();
     }
     else
     {

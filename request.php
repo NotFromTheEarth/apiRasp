@@ -1,14 +1,24 @@
 <?php
+    //to see stored data:
+    //http://localhost/apirasp/see.php
+    
+    //to send data do be recorded:
     // API URL
     $url = 'http://localhost/apiRasp/';
 
     //now
     $dt = new DateTime("now", new DateTimeZone('America/Sao_Paulo'));
-    $now = $dt->format("d-m-Y h:i:s");
+    $now = $dt->format("Y-m-d H:i:s");
     
     //payload is a json with the data
-    $payload = '{"d@tA":[{"t":"time1","s1":"sensor1","s2":"sensor2"},{"t":"time2","s1":"sensor1","s2":"sensor2"},{"t":"time2","s1":"sensor1","s2":"sensor2"}]}';
-    $payload = '{"d@tA":[{"t":"'. $now .'","s1":"'.rand(0, 1023).'","s2":"'.rand(0, 1023).'"},{"t":"'. $now .'","s1":"'.rand(0, 1023).'","s2":"'.rand(0, 1023).'"},{"t":"'. $now .'","s1":"'.rand(0, 1023).'","s2":"'.rand(0, 1023).'"}]}';
+    $payload = '{"d@tA":[{"t":"2023-10-13 20:26:46","s1":"sensor1","s2":"sensor2"},{"t":"2023-10-13 20:26:47","s1":"sensor1","s2":"sensor2"},{"t":"2023-10-13 20:26:48","s1":"sensor1","s2":"sensor2"}]}';
+    $payload = '{"d@tA":[
+                            {"t":"'. $now .'","s1":"'.rand(0, 1023).'","s2":"'.rand(0, 1023).'"},
+                            {"t":"'. $now .'","s1":"'.rand(0, 1023).'","s2":"'.rand(0, 1023).'"},
+                            {"t":"'. $now .'","s1":"'.rand(0, 1023).'","s2":"'.rand(0, 1023).'"},
+                            {"t":"'. $now .'","s1":"'.rand(0, 1023).'","s2":"'.rand(0, 1023).'"},
+                            {"t":"'. $now .'","s1":"'.rand(0, 1023).'","s2":"'.rand(0, 1023).'"}
+                        ]}';
 
     // Create a new cURL resource
     $ch = curl_init($url);
@@ -24,6 +34,9 @@
 
     // Execute the POST request
     $result = curl_exec($ch);
+
+    $errorMessage = curl_error($ch);
+    echo $errorMessage;
 
     // Show the HTTP code that was returned by the server
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);

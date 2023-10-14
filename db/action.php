@@ -25,6 +25,60 @@
         return true;
     }
 
+    function showRecords()
+    {                
+        ?>
+        <table border="1" cellpadding="10">
+            <thead>
+                <th>Date</th>
+                <th>Sensor 1</th>
+                <th>Sensor 2</th>
+            </thead>
+            <tbody>
+                <?php
+                    include_once("connection.php");
+                    $db = make_connection();
+            
+                    $sql_request = "SELECT * FROM datalog ORDER BY date DESC";
+                    $records = $db->query($sql_request) or die($db->error);
+                    
+                    $num_records = mysqli_num_rows($records);
+                    echo "total:". $num_records;
+                
+                    if($num_records <= 0)
+                    {
+                        ?>
+                            <td>
+                                <td colspan="7">No records.</td>
+                            </td>
+                        <?php
+                    }
+                    else
+                    {
+                    while ($record = $records->fetch_assoc())
+                    {
+                        ?>
+                        <tr>
+                            <td><?php echo($record['date']) ?></td>
+                            <td><?php echo($record['s1']) ?></td>
+                            <td><?php echo($record['s2']) ?></td>
+                        </tr>
+                        <?php
+                    }
+                ?>
+                <?php }
+            ?>
+
+            </tbody>
+
+        </table>
+
+        <?php
+
+
+        close_connection($db);
+    }
+
     function get_users()
     {                
         ?>
